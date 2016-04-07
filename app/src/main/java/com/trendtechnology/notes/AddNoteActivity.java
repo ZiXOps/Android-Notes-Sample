@@ -5,8 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.trendtechnology.notes.model.Note;
+import com.trendtechnology.notes.utils.DBAdapter;
 
 import java.util.Calendar;
 
@@ -51,6 +53,17 @@ public class AddNoteActivity extends AppCompatActivity {
         Calendar rightNow = Calendar.getInstance();
         note.setCreationDate(rightNow.getTime());
         note.setChangeDate(rightNow.getTime());
+        DBAdapter db = new DBAdapter(getBaseContext());
+        db.open();
+        boolean success = db.insertData(note);
+        if (success) {
+            Toast.makeText(getBaseContext(), "Заметка добавлена",
+                    Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getBaseContext(), "Не удалось добавить заметку",
+                    Toast.LENGTH_LONG).show();
+        }
+        db.close();
     }
 
 }
