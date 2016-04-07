@@ -1,8 +1,6 @@
 package com.trendtechnology.notes.model;
 
-import java.io.File;
 import java.util.Date;
-import java.util.List;
 
 /**
  * A {@link Note} with it's data.
@@ -14,7 +12,6 @@ public class Note {
 
     private String name;
     private String text;
-    private List<File> attachmentList;
     private Date creationDate;
     private Date changeDate;
 
