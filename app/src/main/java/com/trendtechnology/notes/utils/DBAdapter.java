@@ -2,6 +2,7 @@ package com.trendtechnology.notes.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -31,6 +32,9 @@ public class DBAdapter {
             + NOTE_CREATION_DATE + " datetime default current_timestamp, "
             + NOTE_CHANGE_DATE + " datetime default current_timestamp);";
 
+    private String noteColumns[] = {NOTE_ID, NOTE_TITLE, NOTE_TEXT,
+            NOTE_CREATION_DATE, NOTE_CHANGE_DATE};
+
     private SQLiteDatabase db;
     private DatabaseHelper dbHelper;
     private final Context context;
@@ -57,6 +61,33 @@ public class DBAdapter {
         cv.put(NOTE_CHANGE_DATE, formatDateTime(note.getChangeDate()));
 
         return db.insert(NOTES_TABLE, null, cv) > 0;
+    }
+
+    public boolean deleteData(int id) {
+        return db.delete(NOTES_TABLE, NOTE_ID + "=" + id, null) > 0;
+    }
+
+    public Cursor getData() {
+        return db.query(NOTES_TABLE, noteColumns, null, null, null, null,
+                NOTE_ID + " DESC");
+    }
+
+    public Cursor getDataById(int id) {
+        Cursor cursor = db.query(NOTES_TABLE, noteColumns, NOTE_ID + "="
+                + id, null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
+    public boolean updateData(Note note, int id) {
+        ContentValues cv = new ContentValues();
+        cv.put(NOTE_TITLE, note.getName());
+        cv.put(NOTE_TEXT, note.getText());
+        cv.put(NOTE_CHANGE_DATE, formatDateTime(note.getChangeDate()));
+
+        return db.update(NOTES_TABLE, cv, NOTE_ID + "=" + id, null) > 0;
     }
 
     private String formatDateTime(Date date) {

@@ -34,7 +34,7 @@ public class AddNoteActivity extends AppCompatActivity {
         titleEditText = (EditText) findViewById(R.id.titleEditText);
         noteEditText = (EditText) findViewById(R.id.noteEditText);
         Button addNoteButton = (Button) findViewById(R.id.addNoteButton);
-
+        if (addNoteButton != null)
         addNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
