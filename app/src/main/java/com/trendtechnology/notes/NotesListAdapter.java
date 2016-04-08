@@ -9,23 +9,21 @@ import android.widget.TextView;
 
 import com.trendtechnology.notes.model.Note;
 
-import java.util.Collections;
 import java.util.List;
 
 public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.myViewHolder> {
 
-    private LayoutInflater inflater;
-    List<Note> noteList = Collections.emptyList();
+    List<Note> noteList;
 
-    public NotesListAdapter(Context context, List<Note> noteList) {
-        inflater = LayoutInflater.from(context);
+    public NotesListAdapter(List<Note> noteList) {
         this.noteList = noteList;
     }
 
     @Override
     public myViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.note_item, parent);
-        return new myViewHolder(view);
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.note_item, parent, false);
+        return new myViewHolder(itemView);
     }
 
     @Override
@@ -37,7 +35,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.myVi
 
     @Override
     public int getItemCount() {
-        return 0;
+        return noteList.size();
     }
 
     class myViewHolder extends RecyclerView.ViewHolder {

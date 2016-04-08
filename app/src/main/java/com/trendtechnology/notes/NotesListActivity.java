@@ -1,13 +1,24 @@
 package com.trendtechnology.notes;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.trendtechnology.notes.model.Note;
+import com.trendtechnology.notes.utils.DBAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Activity просмотра списка заметок.
@@ -27,15 +38,53 @@ public class NotesListActivity extends AppCompatActivity {
     private void setupView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.notesList);
+        NotesListAdapter notesListAdapter = new NotesListAdapter(getNotesFromBase());
+        if (recyclerView != null) {
+            recyclerView.setAdapter(notesListAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        }
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab != null)
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
+    }
+
+    /**
+     * Заполняет список заметок данными из базы.
+     *
+     * @return - список заметок.
+     */
+    private List<Note> getNotesFromBase() {
+        Log.d("test", "getNotesFromBase()");
+        List<Note> noteList = new ArrayList<>();
+        DBAdapter db = new DBAdapter(getBaseContext());
+        db.open();
+        Cursor cursor = db.getData();
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            while (!cursor.isAfterLast()) {
+                Note note = new Note();
+                // TODO: добавить id в модель.
+                //note.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_ID)));
+                note.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_TITLE)));
+                note.setText(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_TEXT)));
+                //note.setCreationDate(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CREATION_DATE)));
+                //note.setChangeDate(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CHANGE_DATE)));
+                noteList.add(note);
+                cursor.moveToNext();
             }
-        });
+            db.close();
+        }
+        Log.d("test", noteList.toString());
+        return noteList;
     }
 
     @Override
