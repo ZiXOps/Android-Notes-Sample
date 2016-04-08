@@ -9,6 +9,12 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * Activity просмотра списка заметок.
+ *
+ * @author Alexey Nesterov
+ * @version 1.00 8 Apr 2016
+ */
 public class NotesListActivity extends AppCompatActivity {
 
     @Override
