@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="72dp">
+
+    <TextView
+        android:id="@+id/titleLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingStart="16dp"
+        android:text="Two-Line item"
+        android:textSize="16sp"
+        android:paddingTop="20dp"
+        android:textColor="@color/abc_primary_text_material_light" />
+
+    <TextView
+        android:id="@+id/noteLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="Secondary text"
+        android:textSize="14sp"
+        android:paddingBottom="20dp"
+        android:textColor="@color/secondary_text_default_material_light" />
+
+</LinearLayout>
