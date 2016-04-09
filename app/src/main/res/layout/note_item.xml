@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
-        <variable name="note" type="com.trendtechnology.notes.model.Note"/>
+
+        <variable
+            name="note"
+            type="com.trendtechnology.notes.model.Note" />
     </data>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="@dimen/list_item_height"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
         <TextView
@@ -14,8 +20,8 @@
             android:layout_height="wrap_content"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:textSize="16sp"
-            android:text="@{note.title}" />
+            android:text="@{note.title}"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/noteLabel"
@@ -23,8 +29,8 @@
             android:layout_height="wrap_content"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:textSize="14sp"
-            android:text="@{note.text}" />
+            android:text="@{note.text}"
+            android:textSize="14sp" />
 
     </LinearLayout>
 </layout>

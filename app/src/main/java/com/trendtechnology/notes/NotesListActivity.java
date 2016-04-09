@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.trendtechnology.notes.model.Note;
 import com.trendtechnology.notes.utils.DBAdapter;
+import com.trendtechnology.notes.utils.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,6 +45,7 @@ public class NotesListActivity extends AppCompatActivity {
         if (recyclerView != null) {
             recyclerView.setAdapter(notesListAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+            recyclerView.addItemDecoration(new DividerItemDecoration(this, null));
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
