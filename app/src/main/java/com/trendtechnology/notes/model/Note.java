@@ -1,6 +1,10 @@
 package com.trendtechnology.notes.model;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * A {@link Note} with it's data.
@@ -14,6 +18,7 @@ public class Note {
     private String text;
     private Date creationDate;
     private Date changeDate;
+    private List<Attachment> attachmentList;
 
     public Note() {
     }
@@ -39,6 +44,15 @@ public class Note {
 
     public Date getChangeDate() {
         return this.changeDate;
+    }
+
+    public boolean hasAttachments() {
+        return true;
+    }
+
+    public String getShortDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat( "D LLL", Locale.getDefault() );
+        return dateFormat.format(this.creationDate);
     }
 
     @Override

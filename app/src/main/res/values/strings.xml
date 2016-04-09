@@ -4,4 +4,5 @@
     <string name="note_title">Название заметки</string>
     <string name="note_text">Текст заметки</string>
     <string name="create_note">Создать</string>
+    <string name="attachment">attachment</string>
 </resources>

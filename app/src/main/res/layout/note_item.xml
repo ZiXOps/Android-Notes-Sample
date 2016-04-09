@@ -3,34 +3,37 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="note"
             type="com.trendtechnology.notes.model.Note" />
     </data>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/list_item_height"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
+    <LinearLayout style="@style/NoteItemLayout">
+
+        <LinearLayout style="@style/NoteItemTitleLayout">
+
+            <TextView
+                style="@style/NoteItemTitleFont"
+                android:layout_weight="1"
+                android:text="@{note.getTitle()}" />
+
+            <ImageView
+                style="@style/NoteItemAttachmentIcon"
+                android:contentDescription="@string/attachment"
+                android:src="@drawable/ic_clip_16dp"
+                android:visibility="@{note.hasAttachments() ? View.VISIBLE : View.GONE}" />
+
+            <TextView
+                style="@style/NoteItemDateFont"
+                android:text="@{note.getShortDate()}" />
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/titleLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:text="@{note.title}"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/noteLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:text="@{note.text}"
-            android:textSize="14sp" />
+            style="@style/NoteItemTextFont"
+            android:text="@{note.text}" />
 
     </LinearLayout>
 </layout>

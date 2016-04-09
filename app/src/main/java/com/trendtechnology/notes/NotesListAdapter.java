@@ -11,7 +11,7 @@ import java.util.List;
 
 public class NotesListAdapter extends RecyclerView.Adapter<NoteViewHolder> {
 
-    List<Note> noteList;
+    private List<Note> noteList;
 
     public NotesListAdapter(List<Note> noteList) {
         this.noteList = noteList;
