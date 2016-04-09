@@ -1,6 +1,5 @@
 package com.trendtechnology.notes;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +17,7 @@ import com.trendtechnology.notes.model.Note;
 import com.trendtechnology.notes.utils.DBAdapter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,7 +63,6 @@ public class NotesListActivity extends AppCompatActivity {
      * @return - список заметок.
      */
     private List<Note> getNotesFromBase() {
-        Log.d("test", "getNotesFromBase()");
         List<Note> noteList = new ArrayList<>();
         DBAdapter db = new DBAdapter(getBaseContext());
         db.open();
@@ -71,19 +70,19 @@ public class NotesListActivity extends AppCompatActivity {
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             while (!cursor.isAfterLast()) {
-                Note note = new Note();
-                // TODO: добавить id в модель.
-                //note.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_ID)));
-                note.setName(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_TITLE)));
-                note.setText(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_TEXT)));
-                //note.setCreationDate(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CREATION_DATE)));
-                //note.setChangeDate(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CHANGE_DATE)));
+                Note note = new Note(
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_TITLE)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_TEXT)),
+                        new Date(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CREATION_DATE)),
+                        new Date(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CHANGE_DATE))
+                );
+                Log.d("test", note.toString());
+
                 noteList.add(note);
                 cursor.moveToNext();
             }
             db.close();
         }
-        Log.d("test", noteList.toString());
         return noteList;
     }
 

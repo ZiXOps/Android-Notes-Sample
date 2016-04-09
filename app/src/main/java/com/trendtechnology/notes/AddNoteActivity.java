@@ -47,12 +47,13 @@ public class AddNoteActivity extends AppCompatActivity {
      * Сохраняет новую заметку.
      */
     protected void saveNote() {
-        Note note = new Note();
-        note.setName(titleEditText.getText().toString());
-        note.setText(noteEditText.getText().toString());
         Calendar rightNow = Calendar.getInstance();
-        note.setCreationDate(rightNow.getTime());
-        note.setChangeDate(rightNow.getTime());
+        Note note = new Note(
+                titleEditText.getText().toString(),
+                noteEditText.getText().toString(),
+                rightNow.getTime(),
+                rightNow.getTime()
+        );
         DBAdapter db = new DBAdapter(getBaseContext());
         db.open();
         boolean success = db.insertData(note);

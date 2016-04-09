@@ -55,7 +55,7 @@ public class DBAdapter {
 
     public boolean insertData(Note note) {
         ContentValues cv = new ContentValues();
-        cv.put(NOTE_TITLE, note.getName());
+        cv.put(NOTE_TITLE, note.getTitle());
         cv.put(NOTE_TEXT, note.getText());
         cv.put(NOTE_CREATION_DATE, formatDateTime(note.getCreationDate()));
         cv.put(NOTE_CHANGE_DATE, formatDateTime(note.getChangeDate()));
@@ -83,7 +83,7 @@ public class DBAdapter {
 
     public boolean updateData(Note note, int id) {
         ContentValues cv = new ContentValues();
-        cv.put(NOTE_TITLE, note.getName());
+        cv.put(NOTE_TITLE, note.getTitle());
         cv.put(NOTE_TEXT, note.getText());
         cv.put(NOTE_CHANGE_DATE, formatDateTime(note.getChangeDate()));
 

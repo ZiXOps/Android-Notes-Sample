@@ -10,41 +10,45 @@ import java.util.Date;
  */
 public class Note {
 
-    private String name;
+    private String title;
     private String text;
     private Date creationDate;
     private Date changeDate;
 
-    public void setName(String noteName) {
-        this.name = noteName;
+    public Note() {
     }
 
-    public String getName() {
-        return this.name;
+    public Note(String title, String text, Date creationDate, Date changeDate) {
+        this.title = title;
+        this.text = text;
+        this.creationDate = creationDate;
+        this.changeDate = changeDate;
     }
 
-    public void setText(String noteText) {
-        this.text = noteText;
+    public String getTitle() {
+        return this.title;
     }
 
     public String getText() {
         return this.text;
     }
 
-    public void setCreationDate(Date noteCreationDate) {
-        this.creationDate = noteCreationDate;
-    }
-
     public Date getCreationDate() {
         return this.creationDate;
     }
 
-    public void setChangeDate(Date noteChangeDate) {
-        this.changeDate = noteChangeDate;
-    }
-
     public Date getChangeDate() {
         return this.changeDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Note:{" +
+                "title:'" + this.title + "', " +
+                "text:'" + this.text + "', " +
+                "creationDate:'" + this.creationDate.toString() + "', " +
+                "changeDate:'" + this.changeDate.toString() + "'" +
+                "}";
     }
 
 }
