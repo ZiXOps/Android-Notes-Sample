@@ -1,7 +1,9 @@
 package com.trendtechnology.notes;
 
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +33,13 @@ public class AddNoteActivity extends AppCompatActivity {
     }
 
     private void setupView() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
         titleEditText = (EditText) findViewById(R.id.titleEditText);
         noteEditText = (EditText) findViewById(R.id.noteEditText);
         Button addNoteButton = (Button) findViewById(R.id.addNoteButton);
