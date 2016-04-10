@@ -9,10 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.trendtechnology.notes.model.Note;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 public class DBAdapter {
     private static final String DB_NAME = "notes_data_base";
     private static final int DB_VERSION = 1;
@@ -57,8 +53,8 @@ public class DBAdapter {
         ContentValues cv = new ContentValues();
         cv.put(NOTE_TITLE, note.getTitle());
         cv.put(NOTE_TEXT, note.getText());
-        cv.put(NOTE_CREATION_DATE, formatDateTime(note.getCreationDate()));
-        cv.put(NOTE_CHANGE_DATE, formatDateTime(note.getChangeDate()));
+        cv.put(NOTE_CREATION_DATE, DateUtils.formatDate(note.getCreationDate()));
+        cv.put(NOTE_CHANGE_DATE, DateUtils.formatDate(note.getChangeDate()));
 
         return db.insert(NOTES_TABLE, null, cv) > 0;
     }
@@ -85,15 +81,9 @@ public class DBAdapter {
         ContentValues cv = new ContentValues();
         cv.put(NOTE_TITLE, note.getTitle());
         cv.put(NOTE_TEXT, note.getText());
-        cv.put(NOTE_CHANGE_DATE, formatDateTime(note.getChangeDate()));
+        cv.put(NOTE_CHANGE_DATE, DateUtils.formatDate(note.getChangeDate()));
 
         return db.update(NOTES_TABLE, cv, NOTE_ID + "=" + id, null) > 0;
-    }
-
-    private String formatDateTime(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "dd/MM/yyyy HH:mm:ss", Locale.getDefault());
-        return dateFormat.format(date);
     }
 
     private static class DatabaseHelper extends SQLiteOpenHelper {

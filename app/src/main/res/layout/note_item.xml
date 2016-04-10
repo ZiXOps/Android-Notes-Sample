@@ -4,6 +4,7 @@
     <data>
 
         <import type="android.view.View" />
+        <import type="com.trendtechnology.notes.utils.DateUtils" />
 
         <variable
             name="note"
@@ -27,7 +28,7 @@
 
             <TextView
                 style="@style/NoteItemDateFont"
-                android:text="@{note.getShortDate()}" />
+                android:text="@{DateUtils.getShortDateDiff(note.creationDate)}" />
 
         </LinearLayout>
 

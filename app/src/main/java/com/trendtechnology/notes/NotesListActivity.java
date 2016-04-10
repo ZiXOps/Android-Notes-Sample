@@ -15,10 +15,10 @@ import android.view.View;
 
 import com.trendtechnology.notes.model.Note;
 import com.trendtechnology.notes.utils.DBAdapter;
+import com.trendtechnology.notes.utils.DateUtils;
 import com.trendtechnology.notes.utils.DividerItemDecoration;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -75,8 +75,8 @@ public class NotesListActivity extends AppCompatActivity {
                 Note note = new Note(
                         cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_TITLE)),
                         cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_TEXT)),
-                        new Date(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CREATION_DATE)),
-                        new Date(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CHANGE_DATE))
+                        DateUtils.parseDate(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CREATION_DATE))),
+                        DateUtils.parseDate(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CHANGE_DATE)))
                 );
                 Log.d("test", note.toString());
 
