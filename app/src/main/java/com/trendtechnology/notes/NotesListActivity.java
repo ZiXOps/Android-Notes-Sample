@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.trendtechnology.notes.model.Note;
+import com.trendtechnology.notes.noteList.NoteItemCallbacks;
+import com.trendtechnology.notes.noteList.NotesListAdapter;
 import com.trendtechnology.notes.utils.DBAdapter;
 import com.trendtechnology.notes.utils.DateUtils;
 import com.trendtechnology.notes.utils.DividerItemDecoration;

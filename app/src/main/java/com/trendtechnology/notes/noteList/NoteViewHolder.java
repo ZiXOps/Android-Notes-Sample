@@ -1,4 +1,4 @@
-package com.trendtechnology.notes;
+package com.trendtechnology.notes.noteList;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;

@@ -1,10 +1,11 @@
-package com.trendtechnology.notes;
+package com.trendtechnology.notes.noteList;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.trendtechnology.notes.R;
 import com.trendtechnology.notes.model.Note;
 
 import java.util.List;
