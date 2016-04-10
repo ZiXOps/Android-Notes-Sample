@@ -4,9 +4,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.net.Uri;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * A {@link Note} with it's data.
@@ -16,20 +14,24 @@ import java.util.List;
  */
 public class Note extends BaseObservable {
 
+    private int id;
     private String title;
     private String text;
     private Date creationDate;
     private Date changeDate;
     private Uri imageUri;
 
-    public Note(){
+    public Note() {
     }
 
-    public Note(String title, String text, Date creationDate, Date changeDate) {
-        this.title = title;
-        this.text = text;
-        this.creationDate = creationDate;
-        this.changeDate = changeDate;
+    @Bindable
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+        notifyPropertyChanged(com.trendtechnology.notes.BR.id);
     }
 
     @Bindable
@@ -83,12 +85,13 @@ public class Note extends BaseObservable {
     }
 
     public boolean hasAttachments() {
-        return true;
+        return this.imageUri != null && this.imageUri.toString().length() > 0;
     }
 
     @Override
     public String toString() {
         return "Note:{" +
+                "id:'" + this.id + "', " +
                 "title:'" + this.title + "', " +
                 "text:'" + this.text + "', " +
                 "creationDate:'" + this.creationDate.toString() + "', " +

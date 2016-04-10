@@ -2,6 +2,7 @@ package com.trendtechnology.notes;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -72,12 +73,13 @@ public class NotesListActivity extends AppCompatActivity {
         cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             while (!cursor.isAfterLast()) {
-                Note note = new Note(
-                        cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_TITLE)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_TEXT)),
-                        DateUtils.parseDate(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CREATION_DATE))),
-                        DateUtils.parseDate(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CHANGE_DATE)))
-                );
+                Note note = new Note();
+                note.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_ID)));
+                note.setTitile(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_TITLE)));
+                note.setText(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_TEXT)));
+                note.setCreationDate(DateUtils.parseDate(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CREATION_DATE))));
+                note.setChangeDate(DateUtils.parseDate(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CHANGE_DATE))));
+                note.setImageUri(Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_IMAGE_URI))));
                 Log.d("test", note.toString());
 
                 noteList.add(note);

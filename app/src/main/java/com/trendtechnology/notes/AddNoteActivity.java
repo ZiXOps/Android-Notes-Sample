@@ -33,6 +33,8 @@ public class AddNoteActivity extends AppCompatActivity {
     private ImageView uploadImage;
     private ImageView uploadedImage;
 
+    private Uri selectedImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +84,7 @@ public class AddNoteActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_PICK_IMAGE) {
-            Uri selectedImage = data.getData();
+            selectedImage = data.getData();
             Log.d("test", selectedImage.toString());
             uploadedImage = (ImageView) findViewById(R.id.uploadedImage);
             uploadedImage.setImageURI(selectedImage);
@@ -98,6 +100,7 @@ public class AddNoteActivity extends AppCompatActivity {
         note.setText(noteEditText.getEditText().getText().toString());
         note.setCreationDate(new Date());
         note.setChangeDate(new Date());
+        note.setImageUri(selectedImage);
         DBAdapter db = new DBAdapter(getBaseContext());
         db.open();
         boolean success = db.insertData(note);

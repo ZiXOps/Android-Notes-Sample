@@ -18,7 +18,7 @@
             <TextView
                 style="@style/NoteItemTitleFont"
                 android:layout_weight="1"
-                android:text="@{note.getTitle()}" />
+                android:text="@{note.title}" />
 
             <ImageView
                 style="@style/NoteItemAttachmentIcon"
