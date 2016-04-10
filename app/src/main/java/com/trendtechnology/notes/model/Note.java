@@ -84,10 +84,6 @@ public class Note extends BaseObservable {
         notifyPropertyChanged(com.trendtechnology.notes.BR.imageUri);
     }
 
-    public boolean hasAttachments() {
-        return this.imageUri != null && this.imageUri.toString().length() > 0;
-    }
-
     @Override
     public String toString() {
         return "Note:{" +
