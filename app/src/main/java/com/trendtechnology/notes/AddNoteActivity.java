@@ -1,17 +1,22 @@
 package com.trendtechnology.notes;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.trendtechnology.notes.model.Note;
 import com.trendtechnology.notes.utils.DBAdapter;
 
-import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Activity для добавления новой заметки.
@@ -21,8 +26,12 @@ import java.util.Calendar;
  */
 public class AddNoteActivity extends AppCompatActivity {
 
-    private EditText titleEditText;
-    private EditText noteEditText;
+    protected static final int REQUEST_PICK_IMAGE = 1;
+
+    private TextInputLayout titleEditText;
+    private TextInputLayout noteEditText;
+    private ImageView uploadImage;
+    private ImageView uploadedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +55,9 @@ public class AddNoteActivity extends AppCompatActivity {
                 }
             });
 
-        titleEditText = (EditText) findViewById(R.id.titleEditText);
-        noteEditText = (EditText) findViewById(R.id.noteEditText);
+        titleEditText = (TextInputLayout) findViewById(R.id.titleLabel);
+        noteEditText = (TextInputLayout) findViewById(R.id.noteLabel);
+        uploadImage = (ImageView) findViewById(R.id.uploadImage);
         Button addNoteButton = (Button) findViewById(R.id.addNoteButton);
         if (addNoteButton != null)
             addNoteButton.setOnClickListener(new View.OnClickListener() {
@@ -56,19 +66,38 @@ public class AddNoteActivity extends AppCompatActivity {
                     saveNote();
                 }
             });
+
+        if (uploadImage != null) {
+            uploadImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(galleryIntent, REQUEST_PICK_IMAGE);
+                }
+            });
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_PICK_IMAGE) {
+            Uri selectedImage = data.getData();
+            Log.d("test", selectedImage.toString());
+            uploadedImage = (ImageView) findViewById(R.id.uploadedImage);
+            uploadedImage.setImageURI(selectedImage);
+        }
     }
 
     /**
      * Сохраняет новую заметку.
      */
     protected void saveNote() {
-        Calendar rightNow = Calendar.getInstance();
-        Note note = new Note(
-                titleEditText.getText().toString(),
-                noteEditText.getText().toString(),
-                rightNow.getTime(),
-                rightNow.getTime()
-        );
+        Note note = new Note();
+        note.setTitile(titleEditText.getEditText().getText().toString());
+        note.setText(noteEditText.getEditText().getText().toString());
+        note.setCreationDate(new Date());
+        note.setChangeDate(new Date());
         DBAdapter db = new DBAdapter(getBaseContext());
         db.open();
         boolean success = db.insertData(note);
