@@ -1,7 +1,6 @@
 package com.trendtechnology.notes;
 
 import android.os.Bundle;
-import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -37,19 +36,26 @@ public class AddNoteActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+
+        if (toolbar != null)
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
 
         titleEditText = (EditText) findViewById(R.id.titleEditText);
         noteEditText = (EditText) findViewById(R.id.noteEditText);
         Button addNoteButton = (Button) findViewById(R.id.addNoteButton);
         if (addNoteButton != null)
-        addNoteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveNote();
-            }
-        });
+            addNoteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    saveNote();
+                }
+            });
     }
 
     /**
