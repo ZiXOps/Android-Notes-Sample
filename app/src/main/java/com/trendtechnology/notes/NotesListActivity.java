@@ -28,7 +28,7 @@ import java.util.List;
  * @author Alexey Nesterov
  * @version 1.00 8 Apr 2016
  */
-public class NotesListActivity extends AppCompatActivity {
+public class NotesListActivity extends AppCompatActivity implements NoteItemCallbacks {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,7 @@ public class NotesListActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.notesList);
         NotesListAdapter notesListAdapter = new NotesListAdapter(getNotesFromBase());
         if (recyclerView != null) {
+            notesListAdapter.setNoteItemCallbacks(this);
             recyclerView.setAdapter(notesListAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
             recyclerView.addItemDecoration(new DividerItemDecoration(this, null));
@@ -119,4 +120,12 @@ public class NotesListActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onNoteItemSelected(int noteId) {
+        Log.d("click", Integer.toString(noteId));
+        Intent intent = new Intent(NotesListActivity.this, NoteActivity.class);
+        startActivity(intent);
+    }
+
 }

@@ -4,11 +4,13 @@
     <data>
 
         <import type="android.view.View" />
+
         <import type="com.trendtechnology.notes.utils.DateUtils" />
 
         <variable
             name="note"
             type="com.trendtechnology.notes.model.Note" />
+
     </data>
 
     <LinearLayout style="@style/NoteItemLayout">

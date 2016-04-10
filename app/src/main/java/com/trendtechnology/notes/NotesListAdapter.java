@@ -13,15 +13,32 @@ public class NotesListAdapter extends RecyclerView.Adapter<NoteViewHolder> {
 
     private List<Note> noteList;
 
+    private NoteItemCallbacks mNoteItemCallbacks;
+
     public NotesListAdapter(List<Note> noteList) {
         this.noteList = noteList;
+    }
+
+    public void setNoteItemCallbacks(NoteItemCallbacks noteItemCallbacks) {
+        mNoteItemCallbacks = noteItemCallbacks;
     }
 
     @Override
     public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.note_item, parent, false);
-        return new NoteViewHolder(itemView);
+
+        final NoteViewHolder viewholder = new NoteViewHolder(itemView);
+
+        viewholder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mNoteItemCallbacks != null)
+                    mNoteItemCallbacks.onNoteItemSelected(noteList.get(viewholder.getLayoutPosition()).getId());
+            }
+        });
+
+        return viewholder;
     }
 
     @Override
