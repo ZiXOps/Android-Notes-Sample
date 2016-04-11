@@ -10,6 +10,7 @@
     tools:context=".AddNoteActivity"
     tools:showIn="@layout/activity_add_note">
 
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
