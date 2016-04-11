@@ -92,7 +92,7 @@ public class Note extends BaseObservable {
                 "text:'" + this.text + "', " +
                 "creationDate:'" + this.creationDate.toString() + "', " +
                 "changeDate:'" + this.changeDate.toString() + "', " +
-                "imageUri:'" + "  " + "'" +
+                "imageUri:'" + this.imageUri + "'" +
                 "}";
     }
 
