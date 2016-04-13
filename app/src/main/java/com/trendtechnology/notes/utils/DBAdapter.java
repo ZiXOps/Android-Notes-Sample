@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 
 import com.trendtechnology.notes.model.Note;
 
@@ -62,6 +63,12 @@ public class DBAdapter {
         return db.insert(NOTES_TABLE, null, cv) > 0;
     }
 
+    /**
+     * Удаляет заметку из базы по id.
+     *
+     * @param id - id заметки.
+     * @return - Количество затронутых строк.
+     */
     public boolean deleteData(int id) {
         return db.delete(NOTES_TABLE, NOTE_ID + "=" + id, null) > 0;
     }
@@ -80,6 +87,31 @@ public class DBAdapter {
         return cursor;
     }
 
+    /**
+     * Возвращает заметку из базы по id.
+     *
+     * @param id - id заметки.
+     * @return - {@link Note}.
+     */
+    public Note getNoteById(int id) {
+        Note note = new Note();
+        Cursor cursor = this.getDataById(id);
+        note.setId(cursor.getInt(cursor.getColumnIndexOrThrow(NOTE_ID)));
+        note.setTitile(cursor.getString(cursor.getColumnIndexOrThrow(NOTE_TITLE)));
+        note.setText(cursor.getString(cursor.getColumnIndexOrThrow(NOTE_TEXT)));
+        note.setCreationDate(DateUtils.parseDate(cursor.getString(cursor.getColumnIndexOrThrow(NOTE_CREATION_DATE))));
+        note.setChangeDate(DateUtils.parseDate(cursor.getString(cursor.getColumnIndexOrThrow(NOTE_CHANGE_DATE))));
+        note.setImageUri(Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(NOTE_IMAGE_URI))));
+        return note;
+    }
+
+    /**
+     * Удаляет заметку из базы по id.
+     *
+     * @param note -
+     * @param id - id заметки.
+     * @return - Количество затронутых строк.
+     */
     public boolean updateData(Note note, int id) {
         ContentValues cv = new ContentValues();
         cv.put(NOTE_TITLE, note.getTitle());

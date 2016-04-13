@@ -1,6 +1,9 @@
 package com.trendtechnology.notes;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,18 +18,25 @@ import android.widget.Toast;
 
 import com.trendtechnology.notes.model.Note;
 import com.trendtechnology.notes.utils.DBAdapter;
+import com.trendtechnology.notes.utils.StoreImageUtils;
 
 import java.util.Date;
 
 /**
- * Activity для добавления новой заметки.
+ * Activity для добавления новой или редактирования старой заметки.
  *
  * @author Alexey Nesterov
  * @version 1.00 7 Apr 2016
  */
-public class AddNoteActivity extends AppCompatActivity {
-
+public class EditNoteActivity extends AppCompatActivity {
     protected static final int REQUEST_PICK_IMAGE = 1;
+
+    private boolean EditMode;
+    private int noteId;
+    private Note note;
+    private DBAdapter db;
+
+    ViewDataBinding binding;
 
     private TextInputLayout titleEditText;
     private TextInputLayout noteEditText;
@@ -38,17 +48,28 @@ public class AddNoteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_note);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_note);
         setupView();
     }
 
     private void setupView() {
+        noteId = getIntent().getIntExtra("noteId", -1);
+        EditMode = noteId >= 0;
+
+        db = new DBAdapter(getBaseContext());
+        if (EditMode) {
+            db.open();
+            note = db.getNoteById(noteId);
+            db.close();
+            Log.d("test", note.toString());
+            binding.setVariable(com.trendtechnology.notes.BR.note, note);
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
         if (toolbar != null)
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -65,7 +86,11 @@ public class AddNoteActivity extends AppCompatActivity {
             addNoteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    saveNote();
+                    if (EditMode) {
+                        editNote();
+                    } else {
+                        saveNote();
+                    }
                 }
             });
 
@@ -82,33 +107,62 @@ public class AddNoteActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_PICK_IMAGE) {
             selectedImage = data.getData();
-            Log.d("test", selectedImage.toString());
+            Log.d("test", selectedImage.getPath());
             uploadedImage = (ImageView) findViewById(R.id.uploadedImage);
-            uploadedImage.setImageURI(selectedImage);
+            if (uploadedImage != null)
+                uploadedImage.setImageURI(selectedImage);
+                StoreImageUtils.saveFile(getBaseContext(), BitmapFactory.decodeFile(selectedImage.toString()), "testImg");
+                uploadedImage.getContext();
         }
     }
 
     /**
      * Сохраняет новую заметку.
      */
-    protected void saveNote() {
+    private void saveNote() {
         Note note = new Note();
         note.setTitile(titleEditText.getEditText().getText().toString());
         note.setText(noteEditText.getEditText().getText().toString());
         note.setCreationDate(new Date());
         note.setChangeDate(new Date());
         note.setImageUri(selectedImage);
-        DBAdapter db = new DBAdapter(getBaseContext());
         db.open();
         boolean success = db.insertData(note);
         if (success) {
             Toast.makeText(getBaseContext(), "Заметка добавлена",
                     Toast.LENGTH_LONG).show();
+            onBackPressed();
         } else {
             Toast.makeText(getBaseContext(), "Не удалось добавить заметку",
+                    Toast.LENGTH_LONG).show();
+        }
+        db.close();
+    }
+
+    private void editNote() {
+        note.setTitile(titleEditText.getEditText().getText().toString());
+        note.setText(noteEditText.getEditText().getText().toString());
+        note.setChangeDate(new Date());
+        //note.setImageUri(selectedImage);
+        db.open();
+        boolean success = db.updateData(note, noteId);
+        if (success) {
+            Toast.makeText(getBaseContext(), "Заметка обновлена",
+                    Toast.LENGTH_LONG).show();
+            onBackPressed();
+        } else {
+            Toast.makeText(getBaseContext(), "Не удалось обновить заметку",
                     Toast.LENGTH_LONG).show();
         }
         db.close();

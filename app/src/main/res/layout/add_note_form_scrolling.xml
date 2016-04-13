@@ -1,55 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/activity_horizontal_margin"
-    android:padding="@dimen/activity_horizontal_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".AddNoteActivity"
-    tools:showIn="@layout/activity_add_note">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
+        <variable
+            name="note"
+            type="com.trendtechnology.notes.model.Note" />
+    </data>
+
+    <android.support.v4.widget.NestedScrollView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="8dp">
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
+        android:padding="@dimen/activity_horizontal_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".EditNoteActivity"
+        tools:showIn="@layout/activity_add_note">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/titleLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="8dp">
 
-            <EditText
-                android:id="@+id/titleEditText"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/titleLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/titleEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/note_title"
+                    android:text="@{note != null ? note.title : null}"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/noteLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/noteEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/note_text"
+                    android:text="@{note != null ? note.text : null}" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/addNoteButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:hint="@string/note_title" />
-        </android.support.design.widget.TextInputLayout>
+                android:text="@{note != null ? @string/update_note : @string/create_note}" />
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/noteLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        </LinearLayout>
 
-            <EditText
-                android:id="@+id/noteEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/note_text" />
-        </android.support.design.widget.TextInputLayout>
-
-        <Button
-            android:id="@+id/addNoteButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/create_note" />
-
-    </LinearLayout>
-
-</android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.NestedScrollView>
+</layout>

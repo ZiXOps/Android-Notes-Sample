@@ -57,7 +57,7 @@ public class NotesListActivity extends AppCompatActivity implements NoteItemCall
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(NotesListActivity.this, AddNoteActivity.class);
+                    Intent intent = new Intent(NotesListActivity.this, EditNoteActivity.class);
                     startActivity(intent);
                 }
             });
@@ -127,6 +127,7 @@ public class NotesListActivity extends AppCompatActivity implements NoteItemCall
     public void onNoteItemSelected(int noteId) {
         Log.d("click", Integer.toString(noteId));
         Intent intent = new Intent(NotesListActivity.this, NoteActivity.class);
+        intent.putExtra("noteId", noteId);
         startActivity(intent);
     }
 
