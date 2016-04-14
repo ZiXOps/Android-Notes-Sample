@@ -28,7 +28,7 @@
                 <ImageView
                     android:id="@+id/uploadedImage"
                     style="@style/ParallaxImage"
-                    bindImageUrl="@{note.imageUri}"
+                    bindImageUrl="@{note.imageName}"
                     app:layout_collapseMode="parallax"
                     app:layout_collapseParallaxMultiplier="0.7" />
 

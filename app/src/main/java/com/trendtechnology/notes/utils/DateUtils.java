@@ -31,8 +31,8 @@ public class DateUtils {
      * Возвращает короткую запись даты или времени в зависимости от разницы времени параметра и
      * настоящего времени.
      *
-     * @param displayDate - Дата которую необходимо привести к короткой форме.
-     * @return - короткую строку с датой. Например: "3:35" | "7 апр." | "2015"
+     * @param displayDate Дата которую необходимо привести к короткой форме.
+     * @return короткую строку с датой. Например: "3:35" | "7 апр." | "2015"
      */
     public static String getShortDateDiff(Date displayDate) {
         return getShortDateDiff(displayDate, new Date());
@@ -41,9 +41,9 @@ public class DateUtils {
     /**
      * Возвращает короткую запись даты или времени в зависимости от разницы времени в параметрах.
      *
-     * @param displayDate - Дата которую необходимо привести к короткой форме.
-     * @param currentDate - Текущая дата.
-     * @return - короткую строку с датой. Например: "3:35" | "7 апр." | "2015"
+     * @param displayDate Дата которую необходимо привести к короткой форме.
+     * @param currentDate Текущая дата.
+     * @return короткую строку с датой. Например: "3:35" | "7 апр." | "2015"
      */
     public static String getShortDateDiff(Date displayDate, Date currentDate) {
         // TODO: Дописать вывод записи в часх и годах.

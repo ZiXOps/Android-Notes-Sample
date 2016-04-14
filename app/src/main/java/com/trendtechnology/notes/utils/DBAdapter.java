@@ -58,7 +58,7 @@ public class DBAdapter {
         cv.put(NOTE_TEXT, note.getText());
         cv.put(NOTE_CREATION_DATE, DateUtils.formatDate(note.getCreationDate()));
         cv.put(NOTE_CHANGE_DATE, DateUtils.formatDate(note.getChangeDate()));
-        cv.put(NOTE_IMAGE_URI, (note.getImageUri() != null) ? note.getImageUri().toString() : "");
+        cv.put(NOTE_IMAGE_URI, (note.getImageName() != null) ? note.getImageName() : "");
 
         return db.insert(NOTES_TABLE, null, cv) > 0;
     }
@@ -101,7 +101,7 @@ public class DBAdapter {
         note.setText(cursor.getString(cursor.getColumnIndexOrThrow(NOTE_TEXT)));
         note.setCreationDate(DateUtils.parseDate(cursor.getString(cursor.getColumnIndexOrThrow(NOTE_CREATION_DATE))));
         note.setChangeDate(DateUtils.parseDate(cursor.getString(cursor.getColumnIndexOrThrow(NOTE_CHANGE_DATE))));
-        note.setImageUri(Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(NOTE_IMAGE_URI))));
+        note.setImageName(cursor.getString(cursor.getColumnIndexOrThrow(NOTE_IMAGE_URI)));
         return note;
     }
 
@@ -117,7 +117,7 @@ public class DBAdapter {
         cv.put(NOTE_TITLE, note.getTitle());
         cv.put(NOTE_TEXT, note.getText());
         cv.put(NOTE_CHANGE_DATE, DateUtils.formatDate(note.getChangeDate()));
-        cv.put(NOTE_IMAGE_URI, note.getImageUri().toString());
+        cv.put(NOTE_IMAGE_URI, note.getImageName());
 
         return db.update(NOTES_TABLE, cv, NOTE_ID + "=" + id, null) > 0;
     }

@@ -1,13 +1,19 @@
 package com.trendtechnology.notes;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -20,7 +26,10 @@ import com.trendtechnology.notes.model.Note;
 import com.trendtechnology.notes.utils.DBAdapter;
 import com.trendtechnology.notes.utils.StoreImageUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Activity для добавления новой или редактирования старой заметки.
@@ -30,6 +39,7 @@ import java.util.Date;
  */
 public class EditNoteActivity extends AppCompatActivity {
     protected static final int REQUEST_PICK_IMAGE = 1;
+    protected static final int MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE = 88;
 
     private boolean EditMode;
     private int noteId;
@@ -42,12 +52,12 @@ public class EditNoteActivity extends AppCompatActivity {
     private TextInputLayout noteEditText;
     private ImageView uploadImage;
     private ImageView uploadedImage;
-
-    private Uri selectedImage;
+    private String uploadedImageName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestPermissions();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_note);
         setupView();
     }
@@ -106,24 +116,86 @@ public class EditNoteActivity extends AppCompatActivity {
 
     }
 
+    private void requestPermissions() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE);
+            }
+        }
+    }
+
     @Override
-    public void onRestart()
-    {
-        super.onRestart();
-        finish();
-        startActivity(getIntent());
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_WRITE_EXTERNAL_STORAGE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_PICK_IMAGE) {
-            selectedImage = data.getData();
-            Log.d("test", selectedImage.getPath());
-            uploadedImage = (ImageView) findViewById(R.id.uploadedImage);
-            if (uploadedImage != null)
-                uploadedImage.setImageURI(selectedImage);
-                StoreImageUtils.saveFile(getBaseContext(), BitmapFactory.decodeFile(selectedImage.toString()), "testImg");
-                uploadedImage.getContext();
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_PICK_IMAGE && resultCode == RESULT_OK && null != data) {
+            // Сохраняет изображение в ExternalStorageDirectory.
+            new saveImageTask().execute(data.getData());
+        }
+    }
+
+    /**
+     * Сохраняет изображение, выбранное пользователем.
+     */
+    private class saveImageTask extends AsyncTask<Uri, Integer, String> {
+
+        protected String doInBackground(Uri... urls) {
+            String imageName = "";
+            Uri fileUri = urls[0];
+            Bitmap bmp = null;
+            try {
+                InputStream stream = null;
+                stream = getContentResolver().openInputStream(fileUri);
+                bmp = BitmapFactory.decodeStream(stream);
+                if (stream != null)
+                    stream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (bmp != null) {
+                imageName = StoreImageUtils.storeImage(getBaseContext(), bmp);
+            }
+            return imageName;
+        }
+
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+//            Bitmap savedBitmap = StoreImageUtils.loadBitmap(getBaseContext(), "test.png");
+//            if (savedBitmap != null)
+//                uploadedImage.setImageBitmap(savedBitmap);
+            Log.i("onPostExecute", result);
+            uploadedImageName = result;
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+            Log.i("onProgressUpdate", "progress");
         }
     }
 
@@ -136,7 +208,9 @@ public class EditNoteActivity extends AppCompatActivity {
         note.setText(noteEditText.getEditText().getText().toString());
         note.setCreationDate(new Date());
         note.setChangeDate(new Date());
-        note.setImageUri(selectedImage);
+        if (uploadedImageName != null && !uploadedImageName.equals("")) {
+            note.setImageName(uploadedImageName);
+        }
         db.open();
         boolean success = db.insertData(note);
         if (success) {
@@ -154,7 +228,9 @@ public class EditNoteActivity extends AppCompatActivity {
         note.setTitile(titleEditText.getEditText().getText().toString());
         note.setText(noteEditText.getEditText().getText().toString());
         note.setChangeDate(new Date());
-        //note.setImageUri(selectedImage);
+        if (uploadedImageName != null && !uploadedImageName.equals("")) {
+            note.setImageName(uploadedImageName);
+        }
         db.open();
         boolean success = db.updateData(note, noteId);
         if (success) {

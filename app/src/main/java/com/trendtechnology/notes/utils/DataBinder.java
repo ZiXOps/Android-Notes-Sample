@@ -2,14 +2,17 @@ package com.trendtechnology.notes.utils;
 
 import android.content.Context;
 import android.databinding.BindingAdapter;
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.widget.ImageView;
 
 public final class DataBinder {
 
     @BindingAdapter("bindImageUrl")
-    public static void setImageUrl(ImageView imageView, Uri url) {
+    public static void setImageUrl(ImageView imageView, String imageName) {
         Context context = imageView.getContext();
-        imageView.setImageURI(url);
+        Bitmap bitmap = StoreImageUtils.loadBitmap(context, imageName);
+        if (bitmap != null) {
+            imageView.setImageBitmap(bitmap);
+        }
     }
 }

@@ -19,7 +19,7 @@ public class Note extends BaseObservable {
     private String text;
     private Date creationDate;
     private Date changeDate;
-    private Uri imageUri;
+    private String imageName;
 
     public Note() {
     }
@@ -75,13 +75,13 @@ public class Note extends BaseObservable {
     }
 
     @Bindable
-    public Uri getImageUri() {
-        return this.imageUri;
+    public String getImageName() {
+        return this.imageName;
     }
 
-    public void setImageUri(Uri imageUri) {
-        this.imageUri = imageUri;
-        notifyPropertyChanged(com.trendtechnology.notes.BR.imageUri);
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+        notifyPropertyChanged(com.trendtechnology.notes.BR.imageName);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class Note extends BaseObservable {
                 "text:'" + this.text + "', " +
                 "creationDate:'" + this.creationDate.toString() + "', " +
                 "changeDate:'" + this.changeDate.toString() + "', " +
-                "imageUri:'" + this.imageUri + "'" +
+                "imageUri:'" + this.imageName + "'" +
                 "}";
     }
 

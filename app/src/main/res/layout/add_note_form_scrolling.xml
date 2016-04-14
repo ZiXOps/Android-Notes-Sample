@@ -37,7 +37,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/note_title"
-                    android:text="@{note != null ? note.title : null}"
+                    android:text="@{note.title != null ? note.title : null}"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
@@ -51,7 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/note_text"
-                    android:text="@{note != null ? note.text : null}" />
+                    android:text="@{note.text != null ? note.text : null}" />
             </android.support.design.widget.TextInputLayout>
 
             <Button

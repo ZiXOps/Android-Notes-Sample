@@ -2,7 +2,6 @@ package com.trendtechnology.notes;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -82,7 +81,7 @@ public class NotesListActivity extends AppCompatActivity implements NoteItemCall
                 note.setText(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_TEXT)));
                 note.setCreationDate(DateUtils.parseDate(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CREATION_DATE))));
                 note.setChangeDate(DateUtils.parseDate(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CHANGE_DATE))));
-                note.setImageUri(Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_IMAGE_URI))));
+                note.setImageName(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_IMAGE_URI)));
                 Log.d("test", note.toString());
 
                 noteList.add(note);
