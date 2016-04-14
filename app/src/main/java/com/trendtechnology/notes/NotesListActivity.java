@@ -65,7 +65,7 @@ public class NotesListActivity extends AppCompatActivity implements NoteItemCall
     /**
      * Заполняет список заметок данными из базы.
      *
-     * @return - список заметок.
+     * @return список заметок.
      */
     private List<Note> getNotesFromBase() {
         List<Note> noteList = new ArrayList<>();
@@ -83,7 +83,6 @@ public class NotesListActivity extends AppCompatActivity implements NoteItemCall
                 note.setChangeDate(DateUtils.parseDate(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CHANGE_DATE))));
                 note.setImageName(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_IMAGE_URI)));
                 Log.d("test", note.toString());
-
                 noteList.add(note);
                 cursor.moveToNext();
             }
@@ -102,19 +101,14 @@ public class NotesListActivity extends AppCompatActivity implements NoteItemCall
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }

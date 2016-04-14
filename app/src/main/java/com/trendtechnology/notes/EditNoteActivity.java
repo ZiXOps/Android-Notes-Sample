@@ -73,6 +73,7 @@ public class EditNoteActivity extends AppCompatActivity {
             db.close();
             Log.d("test", note.toString());
             binding.setVariable(com.trendtechnology.notes.BR.note, note);
+            binding.executePendingBindings();
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -91,6 +92,7 @@ public class EditNoteActivity extends AppCompatActivity {
         titleEditText = (TextInputLayout) findViewById(R.id.titleLabel);
         noteEditText = (TextInputLayout) findViewById(R.id.noteLabel);
         uploadImage = (ImageView) findViewById(R.id.uploadImage);
+        uploadedImage = (ImageView) findViewById(R.id.uploadedImage);
         Button addNoteButton = (Button) findViewById(R.id.addNoteButton);
         if (addNoteButton != null)
             addNoteButton.setOnClickListener(new View.OnClickListener() {
@@ -163,6 +165,7 @@ public class EditNoteActivity extends AppCompatActivity {
 
     /**
      * Сохраняет изображение, выбранное пользователем.
+     * Пока изображение обрабатывается, блокируется кнопка добавления заметки.
      */
     private class saveImageTask extends AsyncTask<Uri, Integer, String> {
 
@@ -187,11 +190,13 @@ public class EditNoteActivity extends AppCompatActivity {
 
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-//            Bitmap savedBitmap = StoreImageUtils.loadBitmap(getBaseContext(), "test.png");
-//            if (savedBitmap != null)
-//                uploadedImage.setImageBitmap(savedBitmap);
+            Bitmap bitmap = StoreImageUtils.loadBitmap(getBaseContext(), result);
+            if (bitmap != null) {
+                uploadedImage.setImageBitmap(bitmap);
+            }
             Log.i("onPostExecute", result);
             uploadedImageName = result;
+            binding.executePendingBindings();
         }
 
         protected void onProgressUpdate(Integer... progress) {

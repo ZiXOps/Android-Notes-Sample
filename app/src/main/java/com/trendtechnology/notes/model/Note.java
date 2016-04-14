@@ -2,7 +2,6 @@ package com.trendtechnology.notes.model;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.net.Uri;
 
 import java.util.Date;
 
@@ -92,7 +91,7 @@ public class Note extends BaseObservable {
                 "text:'" + this.text + "', " +
                 "creationDate:'" + this.creationDate.toString() + "', " +
                 "changeDate:'" + this.changeDate.toString() + "', " +
-                "imageUri:'" + this.imageName + "'" +
+                "imageName:'" + this.imageName + "'" +
                 "}";
     }
 

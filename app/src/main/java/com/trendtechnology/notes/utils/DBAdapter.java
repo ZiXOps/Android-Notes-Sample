@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.net.Uri;
 
 import com.trendtechnology.notes.model.Note;
 
@@ -66,8 +65,8 @@ public class DBAdapter {
     /**
      * Удаляет заметку из базы по id.
      *
-     * @param id - id заметки.
-     * @return - Количество затронутых строк.
+     * @param id id заметки.
+     * @return Количество затронутых строк.
      */
     public boolean deleteData(int id) {
         return db.delete(NOTES_TABLE, NOTE_ID + "=" + id, null) > 0;
@@ -90,8 +89,8 @@ public class DBAdapter {
     /**
      * Возвращает заметку из базы по id.
      *
-     * @param id - id заметки.
-     * @return - {@link Note}.
+     * @param id id заметки.
+     * @return {@link Note}.
      */
     public Note getNoteById(int id) {
         Note note = new Note();
@@ -108,9 +107,9 @@ public class DBAdapter {
     /**
      * Удаляет заметку из базы по id.
      *
-     * @param note -
-     * @param id - id заметки.
-     * @return - Количество затронутых строк.
+     * @param note модель заметки.
+     * @param id id заметки.
+     * @return Количество затронутых строк.
      */
     public boolean updateData(Note note, int id) {
         ContentValues cv = new ContentValues();
