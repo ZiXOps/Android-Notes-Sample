@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +30,8 @@ import java.util.List;
  */
 public class NotesListActivity extends AppCompatActivity implements NoteItemCallbacks {
 
+    DBAdapter db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +40,7 @@ public class NotesListActivity extends AppCompatActivity implements NoteItemCall
     }
 
     private void setupView() {
+        db = new DBAdapter(getBaseContext());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -69,24 +71,24 @@ public class NotesListActivity extends AppCompatActivity implements NoteItemCall
      */
     private List<Note> getNotesFromBase() {
         List<Note> noteList = new ArrayList<>();
-        DBAdapter db = new DBAdapter(getBaseContext());
         db.open();
         Cursor cursor = db.getData();
-        cursor.moveToFirst();
-        if (cursor.getCount() > 0) {
-            while (!cursor.isAfterLast()) {
-                Note note = new Note();
-                note.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_ID)));
-                note.setTitile(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_TITLE)));
-                note.setText(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_TEXT)));
-                note.setCreationDate(DateUtils.parseDate(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CREATION_DATE))));
-                note.setChangeDate(DateUtils.parseDate(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CHANGE_DATE))));
-                note.setImageName(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_IMAGE_URI)));
-                Log.d("test", note.toString());
-                noteList.add(note);
-                cursor.moveToNext();
+        if (cursor != null) {
+            cursor.moveToFirst();
+            if (cursor.getCount() > 0) {
+                while (!cursor.isAfterLast()) {
+                    Note note = new Note();
+                    note.setId(cursor.getInt(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_ID)));
+                    note.setTitile(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_TITLE)));
+                    note.setText(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_TEXT)));
+                    note.setCreationDate(DateUtils.parseDate(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CREATION_DATE))));
+                    note.setChangeDate(DateUtils.parseDate(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_CHANGE_DATE))));
+                    note.setImageName(cursor.getString(cursor.getColumnIndexOrThrow(DBAdapter.NOTE_IMAGE_URI)));
+                    noteList.add(note);
+                    cursor.moveToNext();
+                }
+                db.close();
             }
-            db.close();
         }
         return noteList;
     }
@@ -110,6 +112,10 @@ public class NotesListActivity extends AppCompatActivity implements NoteItemCall
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            db.open();
+            db.deleteAllNotes();
+            db.close();
+            setupView();
             return true;
         }
 
@@ -118,7 +124,6 @@ public class NotesListActivity extends AppCompatActivity implements NoteItemCall
 
     @Override
     public void onNoteItemSelected(int noteId) {
-        Log.d("click", Integer.toString(noteId));
         Intent intent = new Intent(NotesListActivity.this, NoteActivity.class);
         intent.putExtra("noteId", noteId);
         startActivity(intent);

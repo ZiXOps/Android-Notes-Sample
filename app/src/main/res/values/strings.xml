@@ -7,4 +7,5 @@
     <string name="update_note">Обновить</string>
     <string name="attachment">attachment</string>
     <string name="new_note">Новая заметка</string>
+    <string name="remove_all_notes">Удалить все заметки</string>
 </resources>

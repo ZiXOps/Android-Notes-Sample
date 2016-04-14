@@ -72,6 +72,15 @@ public class DBAdapter {
         return db.delete(NOTES_TABLE, NOTE_ID + "=" + id, null) > 0;
     }
 
+    /**
+     * Удаляет все заметки из базы.
+     *
+     * @return Количество затронутых строк.
+     */
+    public boolean deleteAllNotes() {
+        return db.delete(NOTES_TABLE, null, null) > 0;
+    }
+
     public Cursor getData() {
         return db.query(NOTES_TABLE, noteColumns, null, null, null, null,
                 NOTE_ID + " DESC");
