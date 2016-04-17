@@ -9,9 +9,11 @@ public final class DataBinder {
     @BindingAdapter("bindImageUrl")
     public static void setImageUrl(ImageView imageView, String imageName) {
         Context context = imageView.getContext();
-        Bitmap bitmap = StoreImageUtils.loadBitmap(context, imageName);
-        if (bitmap != null) {
-            imageView.setImageBitmap(bitmap);
+        if (imageName != null && !imageName.isEmpty()) {
+            Bitmap bitmap = StoreImageUtils.loadBitmap(context, imageName);
+            if (bitmap != null) {
+                imageView.setImageBitmap(bitmap);
+            }
         }
     }
 }
